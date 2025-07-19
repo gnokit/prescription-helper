@@ -4,6 +4,7 @@ import Header from './components/Header';
 import AppointmentCalculator from './components/AppointmentCalculator';
 import MedicationList from './components/MedicationList';
 import Checklist from './components/Checklist';
+import ConfirmModal from './components/ConfirmModal';
 
 const App: React.FC = () => {
   // --- State Initialization with localStorage ---
@@ -37,6 +38,8 @@ const App: React.FC = () => {
       return [];
     }
   });
+
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
 
   // --- Effects for UI and localStorage persistence ---
 
@@ -73,10 +76,8 @@ const App: React.FC = () => {
   const totalDays = useMemo(() => followUpWeeks * 7, [followUpWeeks]);
 
   const handleClearData = () => {
-    if (window.confirm('您確定要清除所有資料嗎？此操作無法復原。')) {
-      localStorage.clear();
-      window.location.reload();
-    }
+    localStorage.clear();
+    window.location.reload();
   };
 
   const appBaseClass = "min-h-screen bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 font-sans transition-colors duration-300";
@@ -107,7 +108,7 @@ const App: React.FC = () => {
         </div>
         <footer className="text-center mt-12 mb-8 space-y-4">
            <button
-            onClick={handleClearData}
+            onClick={() => setIsConfirmModalOpen(true)}
             className="px-4 py-2 text-sm font-medium text-red-600 dark:text-red-400 bg-red-100 dark:bg-red-900/50 hover:bg-red-200 dark:hover:bg-red-800 rounded-lg transition-colors"
           >
             清除所有資料
@@ -117,6 +118,14 @@ const App: React.FC = () => {
           </p>
         </footer>
       </main>
+      <ConfirmModal
+        isOpen={isConfirmModalOpen}
+        onClose={() => setIsConfirmModalOpen(false)}
+        onConfirm={handleClearData}
+        title="確認清除資料"
+        message="您確定要清除所有資料嗎？此操作將無法復原，所有設定和紀錄都將被刪除。"
+        fontSize={fontSize}
+      />
     </div>
   );
 };
