@@ -1,0 +1,5 @@
+{
+  "name": "Prescription Helper",
+  "description": "A simple web application to help manage prescriptions, calculate follow-up appointment dates, and keep a pre-visit checklist.",
+  "requestFramePermissions": []
+}
