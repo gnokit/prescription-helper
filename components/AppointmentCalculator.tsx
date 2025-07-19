@@ -56,11 +56,17 @@ const AppointmentCalculator: React.FC<AppointmentCalculatorProps> = ({
               覆診週數 (天數 / 7)
             </label>
             <input
-              type="number"
+              type="text"
+              inputMode="numeric"
+              pattern="[0-9]*"
               id="follow-up-weeks"
-              value={followUpWeeks}
-              onChange={(e) => setFollowUpWeeks(Math.max(0, parseInt(e.target.value, 10)) || 0)}
-              min="0"
+              value={followUpWeeks || ''}
+              onChange={(e) => {
+                const value = e.target.value;
+                if (/^\d*$/.test(value)) {
+                  setFollowUpWeeks(value === '' ? 0 : parseInt(value, 10));
+                }
+              }}
               className="w-full p-2 border border-slate-300 dark:border-slate-600 rounded-md bg-slate-50 dark:bg-slate-700 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
             />
           </div>
