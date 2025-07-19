@@ -120,29 +120,37 @@ bun run build
 - 更換裝置時需重新設定
 - 可透過「清除所有資料」按鈕重置
 
-## 🌐 部署選項
+## 🌐 部署
 
-### 靜態網站部署
-此應用程式為純前端應用，可部署至任何靜態網站主機：
+### GitHub Pages
 
-- **Vercel**: 一鍵部署，支援 GitHub 整合
-- **Netlify**: 拖曳式部署或 Git 整合
-- **GitHub Pages**: 免費靜態網站託管
-- **Firebase Hosting**: Google 提供的靜態網站服務
+本專案已設定好透過 GitHub Pages 自動部署。
 
-### Docker 部署 (選擇性)
-```dockerfile
-FROM oven/bun:1-alpine AS builder
-WORKDIR /app
-COPY package*.json ./
-RUN bun install --frozen-lockfile
-COPY . .
-RUN bun run build
+#### 部署步驟
 
-FROM nginx:alpine
-COPY --from=builder /app/dist /usr/share/nginx/html
-EXPOSE 80
-```
+1. **安裝依賴套件**
+   ```bash
+   bun install
+   ```
+
+2. **執行部署指令**
+   ```bash
+   bun run deploy
+   ```
+   此指令會自動完成以下操作：
+   - `bun run build`: 建構生產版本的靜態檔案
+   - `gh-pages -d dist`: 將 `dist/` 目錄的內容推送到 `gh-pages` 分支
+
+3. **完成**
+   部署完成後，可透過以下網址訪問：
+   [https://gnokit.github.io/prescription-helper](https://gnokit.github.io/prescription-helper)
+
+### 其他靜態網站主機
+此應用程式為純前端應用，也可部署至任何靜態網站主機，例如：
+- Vercel
+- Netlify
+- Firebase Hosting
+
 
 ## 🔧 開發指南
 
