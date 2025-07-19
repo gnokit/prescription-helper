@@ -78,12 +78,18 @@ prescription-helper/
    bun install
    ```
 
-3. **啟動開發伺服器**
+3. **設定環境變數** (選擇性)
+   建立 `.env.local` 檔案：
+   ```
+   GEMINI_API_KEY=your_api_key_here
+   ```
+
+4. **啟動開發伺服器**
    ```bash
    bun dev
    ```
 
-4. **開啟瀏覽器**
+5. **開啟瀏覽器**
    訪問 `http://localhost:5173`
 
 ### 建構生產版本
