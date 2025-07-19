@@ -34,10 +34,10 @@ This section tests the overall app behavior like theme, font size, and data stor
 ### Test 1.3: Clear All Data
 1.  **Action:** Add one medication and one checklist item. Change the theme to dark.
 2.  **Action:** Scroll to the bottom and click the "清除所有資料" button.
-3.  **Expected Result:** A browser confirmation dialog appears with the message: "您確定要清除所有資料嗎？此操作無法復原。".
-4.  **Action:** Click "Cancel" on the dialog.
-5.  **Expected Result:** Nothing changes. The data (dark theme, medication, checklist item) remains.
-6.  **Action:** Click the "清除所有資料" button again, and this time click "OK".
+3.  **Expected Result:** A custom confirmation modal appears with the title "確認清除資料" and a descriptive message. The background should be dimmed.
+4.  **Action:** Click the "取消" button on the modal.
+5.  **Expected Result:** The modal closes. The data (dark theme, medication, checklist item) remains unchanged.
+6.  **Action:** Click the "清除所有資料" button again, and this time click the "確認清除" button on the modal.
 7.  **Expected Result:** The page reloads and resets to its original state, identical to the state in **Test 1.1**.
 
 ---
