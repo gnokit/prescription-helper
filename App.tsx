@@ -5,6 +5,7 @@ import AppointmentCalculator from './components/AppointmentCalculator';
 import MedicationList from './components/MedicationList';
 import Checklist from './components/Checklist';
 import ConfirmModal from './components/ConfirmModal';
+import Footer from './components/Footer';
 
 const App: React.FC = () => {
   // --- State Initialization with localStorage ---
@@ -106,17 +107,7 @@ const App: React.FC = () => {
             fontSize={fontSize}
           />
         </div>
-        <footer className="text-center mt-12 mb-8 space-y-4">
-           <button
-            onClick={() => setIsConfirmModalOpen(true)}
-            className="px-4 py-2 text-sm font-medium text-red-600 dark:text-red-400 bg-red-100 dark:bg-red-900/50 hover:bg-red-200 dark:hover:bg-red-800 rounded-lg transition-colors"
-          >
-            清除所有資料
-          </button>
-          <p className="text-sm text-slate-400 dark:text-slate-500">
-            處方小幫手 📝💊
-          </p>
-        </footer>
+        <Footer onClearData={() => setIsConfirmModalOpen(true)} fontSize={fontSize} />
       </main>
       <ConfirmModal
         isOpen={isConfirmModalOpen}
