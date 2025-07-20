@@ -39,7 +39,8 @@ const Header: React.FC<HeaderProps> = ({ theme, setTheme, fontSize, setFontSize 
     <header className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm sticky top-0 z-10 shadow-sm">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 md:px-8 py-3 flex justify-between items-center">
         <h1 className={titleClassName}>
-          處方小幫手 <span className="hidden sm:inline">📝💊</span>
+          <img src="favicon-256x256.png" className="w-8 h-8 inline-block mr-2" alt="" />
+          處方小幫手
         </h1>
         <div className="flex items-center space-x-2 sm:space-x-4">
           <div className="flex items-center space-x-1 bg-slate-100 dark:bg-slate-700 p-1 rounded-full">

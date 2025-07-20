@@ -25,16 +25,27 @@ bun update       # Update dependencies
 ### Tech Stack
 - **Frontend**: React 19.1.0 + TypeScript
 - **Build Tool**: Vite
-- **Styling**: Tailwind CSS with dark mode support
+- **Styling**: Tailwind CSS v4 with dark mode support
 - **Icons**: Lucide React
 - **Package Manager**: bun
+
+### Core Architecture Patterns
+
+**State Management**: Centralized in `App.tsx` using React hooks with localStorage persistence via useEffect hooks. Each state variable has dedicated localStorage sync.
+
+**Component Communication**: 
+- Top-down props passing from App.tsx to child components
+- Callback functions for state updates (setMedications, setChecklistItems, etc.)
+- Shared calculation logic via props (e.g., totalDays = followUpWeeks * 7)
+
+**Persistence Layer**: Browser localStorage with JSON serialization. All state auto-saves on change with error handling for JSON.parse failures.
 
 ### Key Features
 1. **Appointment Calculator**: Calculates follow-up dates based on appointment date and weeks interval
 2. **Medication List**: Manages medications with automatic dosage calculations
 3. **Checklist**: Track pre-appointment tasks
-4. **Theme System**: Light/dark mode toggle with persistent preference
-5. **Font Size**: Normal/large font options with persistent preference
+4. **Theme System**: Light/dark mode toggle with persistent preference and DOM class manipulation
+5. **Font Size**: Normal/large font options with persistent preference and dynamic CSS updates
 
 ### Data Model
 
@@ -49,45 +60,86 @@ Located in `types.ts`:
 ```
 prescription-helper/
 ├── components/           # React components (TypeScript)
-│   ├── Header.tsx       # Theme/font controls, app title
-│   ├── AppointmentCalculator.tsx  # Date calculation logic
-│   ├── MedicationList.tsx        # CRUD operations for medications
-│   ├── Checklist.tsx             # Todo list functionality
-│   ├── ConfirmModal.tsx          # Reusable confirmation dialog
-│   └── icons.tsx                 # Custom icon components
-├── App.tsx              # Main app component, state management
+│   ├── Header.tsx       # Theme/font controls, app title, clear data button
+│   ├── AppointmentCalculator.tsx  # Date calculation logic with zh-TW locale
+│   ├── MedicationList.tsx        # CRUD operations for medications with dosage calculations
+│   ├── Checklist.tsx             # Todo list functionality with add/delete/mark complete
+│   ├── ConfirmModal.tsx          # Reusable confirmation dialog for destructive actions
+│   └── icons.tsx                 # Custom icon components (currently empty)
+├── App.tsx              # Main app component, centralized state management
 ├── types.ts             # TypeScript type definitions
-├── vite.config.ts       # Vite configuration (GitHub Pages base path)
-└── tsconfig.json        # TypeScript configuration
+├── vite.config.ts       # Vite configuration (GitHub Pages base path '/prescription-helper/')
+├── tsconfig.json        # TypeScript configuration
+└── index.css            # Global styles and Tailwind imports
 ```
 
-### State Management
+### State Management Details
 
-All state managed via React hooks with localStorage persistence:
-- `appointmentDate`: string (ISO date format)
-- `followUpWeeks`: number (default: 4)
-- `medications`: Medication[]
-- `checklistItems`: ChecklistItem[]
-- `theme`: Theme
-- `fontSize`: FontSize
+**State Variables** (all with localStorage persistence):
+- `appointmentDate`: string (ISO date format, defaults to today)
+- `followUpWeeks`: number (default: 4 weeks)
+- `medications`: Medication[] (JSON parsed from localStorage)
+- `checklistItems`: ChecklistItem[] (JSON parsed from localStorage)
+- `theme`: Theme (affects document.documentElement classList)
+- `fontSize`: FontSize (affects document.body.style.fontSize)
 
-State changes automatically sync to localStorage via useEffect hooks.
+**State Update Patterns**:
+- Direct state setters from useState hooks
+- useEffect hooks automatically sync changes to localStorage
+- No custom hooks or context - simple props-based architecture
 
 ### Component Patterns
 
-**Props Pattern**: All components receive typed props interfaces
-**Calculation Logic**: Medication calculations use `totalDays = followUpWeeks * 7`
-**Styling**: Consistent Tailwind classes with dark mode variants
-**Font Size**: Dynamic styling based on fontSize prop
+**Props Interface Pattern**: Each component exports typed props interface for TypeScript safety
+**Calculation Logic**: Medication calculations use `totalDays = followUpWeeks * 7` passed as prop
+**Styling**: Consistent Tailwind classes with dark: variants, responsive design (p-4 sm:p-6 md:p-8)
+**Font Size**: Dynamic styling based on fontSize prop passed to all components
+**Modal Pattern**: ConfirmModal uses isOpen/onClose/onConfirm callback pattern
 
-### Deployment
+### Key Functions & Calculations
 
-GitHub Pages configured via `homepage` field in package.json and `base` in vite.config.ts. Deploy with `bun run deploy` which runs build + gh-pages deployment.
+**Medication Calculations**:
+- Total pills needed: dailyDosage * totalDays
+- Boxes needed: Math.floor(totalPills / pillsPerBox)
+- Remainder pills: totalPills % pillsPerBox
 
-### Development Notes
+**Date Calculations**:
+- Follow-up date: appointmentDate + (followUpWeeks * 7 days)
+- Date formatting: toLocaleDateString('zh-TW', { year: 'numeric', month: 'long', day: 'numeric' })
 
-- All data stored locally in browser localStorage
-- No backend dependencies
-- Responsive design works on mobile/desktop
-- Chinese language interface (繁體中文)
-- Uses native browser APIs for date formatting (`zh-TW` locale)
+### Deployment Configuration
+
+**GitHub Pages Setup**:
+- `homepage`: "https://gnokit.github.io/prescription-helper" in package.json
+- `base`: "/prescription-helper/" in vite.config.ts
+- Deploy workflow: `bun run build` → `gh-pages -d dist`
+
+### Development Workflow
+
+**Adding New Features**:
+1. Define new types in types.ts if needed
+2. Add new state variables in App.tsx with localStorage integration
+3. Create new component in components/ with proper props interface
+4. Import and integrate into App.tsx
+5. Test localStorage persistence and responsive design
+
+**Testing Considerations**:
+- All state persists automatically - test by refreshing browser
+- Responsive breakpoints: mobile (< 640px), tablet (640-1024px), desktop (> 1024px)
+- Theme switching: test both light/dark modes
+- Font size: test both normal/large options
+- Clear data: test the reset functionality
+
+### Browser APIs Used
+
+- localStorage (data persistence)
+- Date.toLocaleDateString with zh-TW locale
+- document.documentElement.classList (theme switching)
+- document.body.style.fontSize (font size changes)
+- window.location.reload() (data reset)
+
+### Internationalization Notes
+
+- Interface language: Traditional Chinese (繁體中文)
+- Date formatting: Chinese calendar format
+- All user-facing text in Chinese - no i18n framework currently implemented
