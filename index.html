@@ -1,12 +1,30 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="zh_TW">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/png" sizes="32x32" href="/prescription-helper/assets/favicon-256x256-ChbEteps.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>處方小幫手</title>
-  <script type="module" crossorigin src="/prescription-helper/assets/index-BMUTWD2F.js"></script>
-  <link rel="stylesheet" crossorigin href="/prescription-helper/assets/index-Bj7nvDzx.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {},
+        },
+      }
+    </script>
+
+  <script type="importmap">
+{
+  "imports": {
+    "react-dom/": "https://esm.sh/react-dom@^19.1.0/",
+    "react/": "https://esm.sh/react@^19.1.0/",
+    "react": "https://esm.sh/react@^19.1.0"
+  }
+}
+</script>
+  <script type="module" crossorigin src="/prescription-helper/assets/index-hzla_rk3.js"></script>
 </head>
   <body>
     <div id="root"></div>
