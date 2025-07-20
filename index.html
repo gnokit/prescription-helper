@@ -1,10 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-TW">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>處方小幫手</title>
+    
+    <!-- PWA Meta Tags -->
+    <meta name="description" content="藥物管理與追蹤應用程式" />
+    <meta name="theme-color" content="#3b82f6" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="處方小幫手" />
+    <link rel="manifest" href="/prescription-helper/manifest.json" />
+    
+    <!-- iOS Icons -->
+    <link rel="apple-touch-icon" href="/prescription-helper/app-icon-192.png" />
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
@@ -16,7 +28,7 @@
     </script>
 
 <link rel="stylesheet" href="/index.css">
-  <script type="importmap">
+    <script type="importmap">
 {
   "imports": {
     "react-dom/": "https://esm.sh/react-dom@^19.1.0/",
@@ -26,7 +38,7 @@
 }
 </script>
   <script type="module" crossorigin src="/prescription-helper/assets/index-hzla_rk3.js"></script>
-</head>
+<link rel="manifest" href="/prescription-helper/manifest.webmanifest"><script id="vite-plugin-pwa:register-sw" src="/prescription-helper/registerSW.js"></script></head>
   <body>
     <div id="root"></div>
   </body>
