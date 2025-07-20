@@ -1,6 +1,7 @@
 import React from 'react';
 import { Theme, FontSize } from '../types';
 import { SunIcon, MoonIcon } from './icons';
+import app_logo from '../favicon-256x256.png';
 
 interface HeaderProps {
   theme: Theme;
@@ -39,7 +40,7 @@ const Header: React.FC<HeaderProps> = ({ theme, setTheme, fontSize, setFontSize 
     <header className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm sticky top-0 z-10 shadow-sm">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 md:px-8 py-3 flex justify-between items-center">
         <h1 className={titleClassName}>
-          <img src="favicon-256x256.png" className="w-8 h-8 inline-block mr-2" alt="" />
+          <img src={app_logo} className="w-8 h-8 inline-block mr-2" alt="" />
           處方小幫手
         </h1>
         <div className="flex items-center space-x-2 sm:space-x-4">
