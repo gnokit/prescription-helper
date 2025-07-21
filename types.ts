@@ -14,3 +14,4 @@ export interface ChecklistItem {
 
 export type Theme = 'light' | 'dark';
 export type FontSize = 'normal' | 'large';
+export type Language = 'en' | 'zh-TW';

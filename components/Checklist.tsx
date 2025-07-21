@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
-import { ChecklistItem, FontSize } from '../types';
+import { ChecklistItem, FontSize, Language } from '../types';
 import { PlusIcon, TrashIcon, CheckIcon } from './icons';
+import { t } from '../i18n';
 
 interface ChecklistProps {
   items: ChecklistItem[];
   setItems: React.Dispatch<React.SetStateAction<ChecklistItem[]>>;
   fontSize: FontSize;
+  language: Language;
 }
 
-const Checklist: React.FC<ChecklistProps> = ({ items, setItems, fontSize }) => {
+const Checklist: React.FC<ChecklistProps> = ({ items, setItems, fontSize, language }) => {
   const [newItemText, setNewItemText] = useState('');
 
   const handleAddItem = (e: React.FormEvent) => {
@@ -35,20 +37,20 @@ const Checklist: React.FC<ChecklistProps> = ({ items, setItems, fontSize }) => {
   return (
     <div className="bg-white dark:bg-slate-800 rounded-xl shadow-md overflow-hidden">
       <div className="p-6">
-        <h2 className={`font-semibold text-slate-700 dark:text-slate-200 mb-4 ${fontSize === 'large' ? 'text-xl' : 'text-lg'}`}>✅ 覆診前檢查清單</h2>
+        <h2 className={`font-semibold text-slate-700 dark:text-slate-200 mb-4 ${fontSize === 'large' ? 'text-xl' : 'text-lg'}`}>✅ {t('checklist.title', language)}</h2>
         <form onSubmit={handleAddItem} className="flex gap-2 mb-4">
           <input
             type="text"
             value={newItemText}
             onChange={(e) => setNewItemText(e.target.value)}
-            placeholder="例如：抽血檢查"
+            placeholder={t('checklist.placeholder', language)}
             className="flex-grow p-2 border border-slate-300 dark:border-slate-600 rounded-md bg-slate-50 dark:bg-slate-700 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
           />
           <button
             type="submit"
             className="p-2 px-4 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors disabled:bg-indigo-300 dark:disabled:bg-slate-600"
             disabled={!newItemText.trim()}
-            aria-label="新增檢查項目"
+            aria-label={t('checklist.add', language)}
           >
             <PlusIcon className="w-5 h-5" />
           </button>
@@ -84,7 +86,7 @@ const Checklist: React.FC<ChecklistProps> = ({ items, setItems, fontSize }) => {
           ))}
           {items.length === 0 && (
             <p className="text-center text-sm text-slate-400 dark:text-slate-500 py-4">
-              沒有待辦事項。
+              {t('checklist.empty', language)}
             </p>
           )}
         </ul>

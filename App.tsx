@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Medication, ChecklistItem, Theme, FontSize } from './types';
+import { Medication, ChecklistItem, Theme, FontSize, Language } from './types';
 import Header from './components/Header';
 import AppointmentCalculator from './components/AppointmentCalculator';
 import MedicationList from './components/MedicationList';
@@ -12,6 +12,7 @@ const App: React.FC = () => {
 
   const [theme, setTheme] = useState<Theme>(() => (localStorage.getItem('theme') as Theme) || 'light');
   const [fontSize, setFontSize] = useState<FontSize>(() => (localStorage.getItem('fontSize') as FontSize) || 'normal');
+  const [language, setLanguage] = useState<Language>(() => (localStorage.getItem('language') as Language) || 'zh-TW');
   
   const [appointmentDate, setAppointmentDate] = useState<string>(() => {
     return localStorage.getItem('appointmentDate') || new Date().toISOString().split('T')[0];
@@ -59,6 +60,10 @@ const App: React.FC = () => {
   }, [fontSize]);
 
   useEffect(() => {
+    localStorage.setItem('language', language);
+  }, [language]);
+
+  useEffect(() => {
     localStorage.setItem('appointmentDate', appointmentDate);
   }, [appointmentDate]);
 
@@ -85,7 +90,14 @@ const App: React.FC = () => {
 
   return (
     <div className={appBaseClass}>
-      <Header theme={theme} setTheme={setTheme} fontSize={fontSize} setFontSize={setFontSize} />
+      <Header 
+        theme={theme} 
+        setTheme={setTheme} 
+        fontSize={fontSize} 
+        setFontSize={setFontSize}
+        language={language}
+        setLanguage={setLanguage}
+      />
       <main className="p-4 sm:p-6 md:p-8 max-w-3xl mx-auto">
         <div className="space-y-8">
           <AppointmentCalculator 
@@ -94,28 +106,30 @@ const App: React.FC = () => {
             followUpWeeks={followUpWeeks}
             setFollowUpWeeks={setFollowUpWeeks}
             fontSize={fontSize}
+            language={language}
           />
           <MedicationList 
             medications={medications} 
             setMedications={setMedications} 
             totalDays={totalDays}
             fontSize={fontSize}
+            language={language}
           />
           <Checklist 
             items={checklistItems} 
             setItems={setChecklistItems}
             fontSize={fontSize}
+            language={language}
           />
         </div>
-        <Footer onClearData={() => setIsConfirmModalOpen(true)} fontSize={fontSize} />
+        <Footer onClearData={() => setIsConfirmModalOpen(true)} fontSize={fontSize} language={language} />
       </main>
       <ConfirmModal
         isOpen={isConfirmModalOpen}
         onClose={() => setIsConfirmModalOpen(false)}
         onConfirm={handleClearData}
-        title="確認清除資料"
-        message="您確定要清除所有資料嗎？此操作將無法復原，所有設定和紀錄都將被刪除。"
         fontSize={fontSize}
+        language={language}
       />
     </div>
   );

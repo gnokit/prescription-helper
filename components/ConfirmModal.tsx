@@ -1,22 +1,21 @@
 import React from 'react';
-import { FontSize } from '../types';
+import { FontSize, Language } from '../types';
+import { t } from '../i18n';
 
 interface ConfirmModalProps {
   isOpen: boolean;
   onClose: () => void;
   onConfirm: () => void;
-  title: string;
-  message: string;
   fontSize: FontSize;
+  language: Language;
 }
 
 const ConfirmModal: React.FC<ConfirmModalProps> = ({
   isOpen,
   onClose,
   onConfirm,
-  title,
-  message,
   fontSize,
+  language,
 }) => {
   if (!isOpen) return null;
 
@@ -30,10 +29,10 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
       <div className="bg-white dark:bg-slate-800 rounded-xl shadow-2xl w-full max-w-md m-4 transform transition-all duration-300 scale-95 hover:scale-100">
         <div className="p-6">
           <h2 className={`font-semibold text-slate-800 dark:text-slate-100 ${fontSize === 'large' ? 'text-xl' : 'text-lg'}`}>
-            {title}
+            {t('confirm.title', language)}
           </h2>
           <p className={`mt-2 text-slate-600 dark:text-slate-300 ${fontSize === 'large' ? 'text-base' : 'text-sm'}`}>
-            {message}
+            {t('confirm.clearData', language)}
           </p>
         </div>
         <div className="bg-slate-50 dark:bg-slate-700/50 px-6 py-4 flex justify-end space-x-3 rounded-b-xl">
@@ -43,7 +42,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
               fontSize === 'large' ? 'text-base' : 'text-sm'
             }`}
           >
-            取消
+            {t('confirm.cancel', language)}
           </button>
           <button
             onClick={handleConfirm}
@@ -51,7 +50,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
               fontSize === 'large' ? 'text-base' : 'text-sm'
             }`}
           >
-            確認清除
+            {t('confirm.clear', language)}
           </button>
         </div>
       </div>

@@ -14,6 +14,10 @@ bun deploy       # Deploy to GitHub Pages
 # Package management
 bun install      # Install dependencies
 bun update       # Update dependencies
+
+# Type checking and debugging
+bun tsc --noEmit # TypeScript type checking
+bun run build    # Also runs type checking as part of build process
 ```
 
 ## Project Overview
@@ -95,6 +99,38 @@ prescription-helper/
 **Styling**: Consistent Tailwind classes with dark: variants, responsive design (p-4 sm:p-6 md:p-8)
 **Font Size**: Dynamic styling based on fontSize prop passed to all components
 **Modal Pattern**: ConfirmModal uses isOpen/onClose/onConfirm callback pattern
+
+### Component-Specific Patterns
+
+**Single-File Components**: All components defined in single .tsx files with inline interfaces
+**Prop Drilling**: State and callbacks passed explicitly through component tree via props
+**Direct DOM Manipulation**: Theme and font size changes applied directly to document.documentElement/document.body
+**Hardcoded i18n**: All UI text in Traditional Chinese (繁體中文) with no i18n framework
+
+### Responsive Design System
+
+**Breakpoints**: 
+- Mobile: < 640px (default mobile-first approach)
+- Tablet: 640px - 1024px
+- Desktop: > 1024px
+
+**Spacing Pattern**: Consistent p-4 → sm:p-6 → md:p-8 progression across components
+
+### Troubleshooting
+
+**localStorage Issues**:
+- Check browser dev tools → Application → Local Storage → file:// or localhost:5173
+- Clear storage manually if data corruption suspected
+- Data format: JSON strings with keys matching state variable names
+
+**GitHub Pages Deployment**:
+- Ensure `homepage` field in package.json matches your repo URL
+- Check vite.config.ts has correct `base: "/prescription-helper/"`
+- Build must complete without TypeScript errors
+
+**CORS/Local File Access**:
+- Always use `bun dev` for development (file:// protocol has localStorage limitations)
+- Production build tested with `bun preview` before deployment
 
 ### Key Functions & Calculations
 

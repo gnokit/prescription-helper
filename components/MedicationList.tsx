@@ -1,12 +1,14 @@
 import React from 'react';
-import { Medication, FontSize } from '../types';
+import { Medication, FontSize, Language } from '../types';
 import { PlusIcon, TrashIcon } from './icons';
+import { t } from '../i18n';
 
 interface MedicationListProps {
   medications: Medication[];
   setMedications: React.Dispatch<React.SetStateAction<Medication[]>>;
   totalDays: number;
   fontSize: FontSize;
+  language: Language;
 }
 
 interface MedicationItemProps {
@@ -15,9 +17,10 @@ interface MedicationItemProps {
   onDelete: (id: string) => void;
   totalDays: number;
   fontSize: FontSize;
+  language: Language;
 }
 
-const MedicationItem: React.FC<MedicationItemProps> = ({ medication, onUpdate, onDelete, totalDays, fontSize }) => {
+const MedicationItem: React.FC<MedicationItemProps> = ({ medication, onUpdate, onDelete, totalDays, fontSize, language }) => {
   const { name, dailyDosage, pillsPerBox, notes } = medication;
 
   const totalPills = dailyDosage * totalDays;
@@ -33,7 +36,7 @@ const MedicationItem: React.FC<MedicationItemProps> = ({ medication, onUpdate, o
       <div className="flex justify-between items-start">
         <input
           type="text"
-          placeholder="藥物名稱"
+          placeholder={t('medication.name.placeholder', language)}
           value={name}
           onChange={(e) => onUpdate(medication.id, 'name', e.target.value)}
           className="font-semibold bg-transparent w-full focus:outline-none text-indigo-700 dark:text-indigo-400"
@@ -41,7 +44,7 @@ const MedicationItem: React.FC<MedicationItemProps> = ({ medication, onUpdate, o
         <button 
           onClick={() => onDelete(medication.id)} 
           className="text-slate-400 hover:text-red-500 dark:hover:text-red-400 transition-colors p-1 -mr-1 -mt-1 flex-shrink-0"
-          aria-label={`刪除 ${name}`}
+          aria-label={`${t('medication.delete', language)} ${name}`}
         >
           <TrashIcon />
         </button>
@@ -49,7 +52,7 @@ const MedicationItem: React.FC<MedicationItemProps> = ({ medication, onUpdate, o
 
       <div className="grid grid-cols-2 gap-3">
         <div>
-          <label className={labelClassName}>每日劑量</label>
+          <label className={labelClassName}>{t('medication.dailyDosage.label', language)}</label>
           <input
             type="number"
             value={dailyDosage}
@@ -58,7 +61,7 @@ const MedicationItem: React.FC<MedicationItemProps> = ({ medication, onUpdate, o
           />
         </div>
         <div>
-          <label className={labelClassName}>每盒數量</label>
+          <label className={labelClassName}>{t('medication.pillsPerBox.label', language)}</label>
           <input
             type="number"
             value={pillsPerBox}
@@ -69,27 +72,27 @@ const MedicationItem: React.FC<MedicationItemProps> = ({ medication, onUpdate, o
       </div>
 
       <div>
-        <label className={labelClassName}>備註</label>
+        <label className={labelClassName}>{t('medication.notes.label', language)}</label>
         <textarea
           value={notes}
           onChange={(e) => onUpdate(medication.id, 'notes', e.target.value)}
-          placeholder="例如：飯後服用"
+          placeholder={t('medication.notes.placeholder', language)}
           rows={2}
           className="w-full p-2 border border-slate-300 dark:border-slate-600 rounded-md bg-white dark:bg-slate-700 focus:ring-1 focus:ring-indigo-500"
         />
       </div>
 
       <div className="mt-2 pt-3 border-t border-slate-200 dark:border-slate-700 text-center">
-        <p className={`text-slate-500 dark:text-slate-400 ${fontSize === 'large' ? 'text-sm' : 'text-xs'}`}>共需 {totalPills.toFixed(1)} 顆 (領藥 {totalDays} 天)</p>
+        <p className={`text-slate-500 dark:text-slate-400 ${fontSize === 'large' ? 'text-sm' : 'text-xs'}`}>{t('medication.totalPills', language)} {totalPills.toFixed(1)} {language === 'en' ? 'pills' : '顆'} ({totalDays} {t('appointment.weeks.unit', language)})</p>
         <p className="font-bold text-slate-700 dark:text-slate-200">
-          <span className="text-lg text-indigo-600 dark:text-indigo-400">{boxes}</span> 盒 + <span className="text-lg text-emerald-600 dark:text-emerald-400">{loosePills.toFixed(1)}</span> 顆
+          <span className="text-lg text-indigo-600 dark:text-indigo-400">{boxes}</span> {t('medication.boxesNeeded', language)} + <span className="text-lg text-emerald-600 dark:text-emerald-400">{loosePills.toFixed(1)}</span> {t('medication.remainder', language)}
         </p>
       </div>
     </div>
   );
 };
 
-const MedicationList: React.FC<MedicationListProps> = ({ medications, setMedications, totalDays, fontSize }) => {
+const MedicationList: React.FC<MedicationListProps> = ({ medications, setMedications, totalDays, fontSize, language }) => {
   const addMedication = () => {
     const newMedication: Medication = {
       id: Date.now().toString(),
@@ -112,7 +115,7 @@ const MedicationList: React.FC<MedicationListProps> = ({ medications, setMedicat
   return (
     <div className="bg-white dark:bg-slate-800 rounded-xl shadow-md overflow-hidden">
       <div className="p-6">
-        <h2 className={`font-semibold text-slate-700 dark:text-slate-200 mb-4 ${fontSize === 'large' ? 'text-xl' : 'text-lg'}`}>💊 我的藥物清單</h2>
+        <h2 className={`font-semibold text-slate-700 dark:text-slate-200 mb-4 ${fontSize === 'large' ? 'text-xl' : 'text-lg'}`}>💊 {t('medication.title', language)}</h2>
         <div className="space-y-4">
           {medications.map(med => (
             <MedicationItem
@@ -122,6 +125,7 @@ const MedicationList: React.FC<MedicationListProps> = ({ medications, setMedicat
               onDelete={deleteMedication}
               totalDays={totalDays}
               fontSize={fontSize}
+              language={language}
             />
           ))}
         </div>
@@ -130,7 +134,7 @@ const MedicationList: React.FC<MedicationListProps> = ({ medications, setMedicat
           className="mt-6 w-full flex items-center justify-center gap-2 p-3 text-sm font-semibold text-indigo-600 dark:text-indigo-300 bg-indigo-100 dark:bg-indigo-900/50 hover:bg-indigo-200 dark:hover:bg-indigo-900 rounded-lg transition-colors"
         >
           <PlusIcon />
-          新增藥物
+          {t('medication.add', language)}
         </button>
       </div>
     </div>

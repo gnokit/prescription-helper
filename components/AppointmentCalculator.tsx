@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
-import { FontSize } from '../types';
+import { FontSize, Language } from '../types';
+import { t } from '../i18n';
 
 interface AppointmentCalculatorProps {
   appointmentDate: string;
@@ -7,6 +8,7 @@ interface AppointmentCalculatorProps {
   followUpWeeks: number;
   setFollowUpWeeks: (weeks: number) => void;
   fontSize: FontSize;
+  language: Language;
 }
 
 const AppointmentCalculator: React.FC<AppointmentCalculatorProps> = ({
@@ -15,18 +17,19 @@ const AppointmentCalculator: React.FC<AppointmentCalculatorProps> = ({
   followUpWeeks,
   setFollowUpWeeks,
   fontSize,
+  language,
 }) => {
   const nextAppointmentDate = useMemo(() => {
-    if (!appointmentDate) return '請選擇看診日期';
+    if (!appointmentDate) return t('appointment.date.label', language);
     const currentDate = new Date(appointmentDate);
     currentDate.setDate(currentDate.getDate() + followUpWeeks * 7);
-    return currentDate.toLocaleDateString('zh-TW', {
+    return currentDate.toLocaleDateString(t('appointment.date.format', language), {
       year: 'numeric',
       month: 'long',
       day: 'numeric',
       weekday: 'long',
     });
-  }, [appointmentDate, followUpWeeks]);
+  }, [appointmentDate, followUpWeeks, language]);
 
   const labelClassName = `block font-medium text-slate-600 dark:text-slate-300 mb-1 ${
     fontSize === 'large' ? 'text-base' : 'text-sm'
@@ -36,12 +39,12 @@ const AppointmentCalculator: React.FC<AppointmentCalculatorProps> = ({
     <div className="bg-white dark:bg-slate-800 rounded-xl shadow-md overflow-hidden">
       <div className="p-6">
         <h2 className={`font-semibold text-slate-700 dark:text-slate-200 mb-4 ${fontSize === 'large' ? 'text-xl' : 'text-lg'}`}>
-          🗓️ 覆診日期計算機
+          🗓️ {t('appointment.title', language)}
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <label htmlFor="appointment-date" className={labelClassName}>
-              本次看診日期
+              {t('appointment.date.label', language)}
             </label>
             <input
               type="date"
@@ -53,7 +56,7 @@ const AppointmentCalculator: React.FC<AppointmentCalculatorProps> = ({
           </div>
           <div>
             <label htmlFor="follow-up-weeks" className={labelClassName}>
-              覆診週數 (天數 / 7)
+              {t('appointment.weeks.label', language)} ({t('appointment.weeks.unit', language)})
             </label>
             <input
               type="text"
@@ -72,7 +75,7 @@ const AppointmentCalculator: React.FC<AppointmentCalculatorProps> = ({
           </div>
         </div>
         <div className="mt-6 bg-indigo-50 dark:bg-indigo-900/50 p-4 rounded-lg text-center">
-          <p className={`font-medium text-indigo-600 dark:text-indigo-300 ${fontSize === 'large' ? 'text-base' : 'text-sm'}`}>下次覆診日期</p>
+          <p className={`font-medium text-indigo-600 dark:text-indigo-300 ${fontSize === 'large' ? 'text-base' : 'text-sm'}`}>{t('appointment.followUpDate', language)}</p>
           <p className="text-xl sm:text-2xl font-bold text-indigo-800 dark:text-indigo-200 mt-1">{nextAppointmentDate}</p>
         </div>
       </div>
