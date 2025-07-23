@@ -2,6 +2,8 @@
 
 一個專為患者設計的處方藥物管理應用程式，提供藥物劑量計算、覆診日期追蹤和檢查清單功能。
 
+<img width="762" height="1019" alt="Screenshot 2025-07-23 at 1 53 45 PM" src="https://github.com/user-attachments/assets/7d6fad74-cdb9-4a9e-929f-0d3ff4d20d50" />
+
 ## 🎯 功能特色
 
 ### 📅 覆診日期計算機
